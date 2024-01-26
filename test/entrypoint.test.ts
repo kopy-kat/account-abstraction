@@ -848,7 +848,7 @@ describe('EntryPoint', function () {
           callData: accountExecCounterFromEntryPoint.data,
           sender: account2.address,
           callGasLimit: 2e6,
-          verificationGasLimit: 76000
+          verificationGasLimit: 2e6
         }, accountOwner2, entryPoint)
 
         await simulateValidation(op2, entryPoint.address)

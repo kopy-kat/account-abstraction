@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.12;
+pragma solidity ^0.8.23;
 
 /**
  * Helper contract for EntryPoint, to call userOp.initCode from a "neutral" address,
@@ -19,7 +19,7 @@ contract SenderCreator {
         bytes memory initCallData = initCode[20:];
         bool success;
         /* solhint-disable no-inline-assembly */
-        assembly {
+        assembly ("memory-safe") {
             success := call(
                 gas(),
                 factory,

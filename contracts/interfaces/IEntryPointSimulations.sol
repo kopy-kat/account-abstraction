@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.12;
+pragma solidity >=0.7.5;
 
 import "./PackedUserOperation.sol";
 import "./IEntryPoint.sol";
@@ -9,8 +9,8 @@ interface IEntryPointSimulations is IEntryPoint {
     struct ExecutionResult {
         uint256 preOpGas;
         uint256 paid;
-        uint48 validAfter;
-        uint48 validUntil;
+        uint256 accountValidationData;
+        uint256 paymasterValidationData;
         bool targetSuccess;
         bytes targetResult;
     }
@@ -35,10 +35,10 @@ interface IEntryPointSimulations is IEntryPoint {
 
     /**
      * Simulate a call to account.validateUserOp and paymaster.validatePaymasterUserOp.
-     * @dev This method always reverts. Successful result is ValidationResult error. other errors are failures.
      * @dev The node must also verify it doesn't use banned opcodes, and that it doesn't reference storage
      *      outside the account's data.
      * @param userOp - The user operation to validate.
+     * @return the validation result structure
      */
     function simulateValidation(
         PackedUserOperation calldata userOp
@@ -50,7 +50,6 @@ interface IEntryPointSimulations is IEntryPoint {
 
     /**
      * Simulate full execution of a UserOperation (including both validation and target execution)
-     * This method will always revert with "ExecutionResult".
      * It performs full validation of the UserOperation, but ignores signature error.
      * An optional target address is called after the userop succeeds,
      * and its value is returned (before the entire call is reverted).
@@ -60,6 +59,7 @@ interface IEntryPointSimulations is IEntryPoint {
      * @param target         - If nonzero, a target address to call after userop simulation. If called,
      *                         the targetSuccess and targetResult are set to the return from that call.
      * @param targetCallData - CallData to pass to target address.
+     * @return the execution result structure
      */
     function simulateHandleOp(
         PackedUserOperation calldata op,

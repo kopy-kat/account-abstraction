@@ -35,7 +35,9 @@ contract EntryPointSimulations is EntryPoint, IEntryPointSimulations {
      * it as entrypoint, since the simulation functions don't check the signatures
      */
     constructor() {
-        require(block.number < 100, "should not be deployed");
+        // THIS CONTRACT SHOULD NOT BE DEPLOYED
+        // however, the line of code below is commented to allow this entryPoint to be used in fork tests
+        // require(block.number < 100, "should not be deployed");
     }
 
     /// @inheritdoc IEntryPointSimulations
